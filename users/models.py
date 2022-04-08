@@ -3,4 +3,4 @@ from django.db import models
 
 
 class User(AbstractUser):
-    user: models.TextField()
+    user = models.TextField(blank=True, null=True)
