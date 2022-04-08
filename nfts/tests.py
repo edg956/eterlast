@@ -67,3 +67,61 @@ class NftApiTestCase(TestCase):
         nft_data = data[0]
 
         self.assertEquals(nft.asset_id, nft_data["asset_id"])
+
+
+class CollectionApiTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        u = User.objects.create(user="dummy-wallet")
+
+        cls.user = u
+
+        cls.data = {
+            "name": "The Collection",
+            "creator": u.user,
+            "creator_network": "user_wallet"        # TODO: what's user_wallet?
+        }
+
+        cls.client = Client()
+
+    def test_create_collection_does_what_it_should(self):
+        r = self.client.post('/nft-api/v1/create_collection', self.data)
+
+        self.assertEquals(r.status_code, 201)
+
+        collections = Collection.objects.all()
+        self.assertEquals(1, len(collections))
+
+        collection = collections[0]
+        self.assertEquals(collection.name, self.data["name"])
+
+        self.assertEquals(collection.creator, self.user)
+
+    def test_get_collection(self):
+        collection = Collection.objects.create(**self.data)
+        r = self.client.get(f'/nft-api/v1/collection/{collection.id}')
+        self.assertEquals(r.status_code, 200)
+
+        data = r.json()
+
+        self.assertEquals(collection.id, data["id"])
+
+    def test_list_collections_without_collections(self):
+        r = self.client.get(f'/nft-api/v1/collection/all')
+        self.assertEquals(r.status_code, 200)
+
+        data = r.json()
+
+        self.assertEquals(len(data), 0)
+
+    def test_list_collections(self):
+        collection = Collection.objects.create(**self.data)
+
+        r = self.client.get(f'/nft-api/v1/collection/all')
+
+        self.assertEquals(r.status_code, 200)
+        data = r.json()
+        self.assertEquals(len(data), 1)
+        data = data[0]
+
+        self.assertEquals(collection.id, data["id"])
