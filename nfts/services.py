@@ -3,11 +3,9 @@ from nfts.models import NFT, Collection
 
 class NFTService:
     """Service that handles the use cases that update DB around NFTs"""
-    class DuplicateID(Exception):
-        pass
-
     @staticmethod
     def mint(data: dict):
+        data["collection"] = Collection.objects.get(id=data["collection"])
         NFT.objects.create(**data)
 
 
