@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Apps
-    'users'
+    'users',
+    'nfts'
 ]
 
 MIDDLEWARE = [
