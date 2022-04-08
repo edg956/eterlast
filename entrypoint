@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Collecting statics"
+python manage.py collectstatic
+
+echo "Running migrations"
+python manage.py migrate
+
+echo "Loading fixtures"
+python manage.py loaddata
+
+gunicorn -w 1 -b 0.0.0.0:8000 'eterlast.wsgi' &
+
+nginx > /dev/null 2>&1 &
