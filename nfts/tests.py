@@ -78,7 +78,7 @@ class CollectionApiTestCase(TestCase):
 
         cls.data = {
             "name": "The Collection",
-            "creator": u.user,
+            "creator": u,
             "creator_network": "user_wallet"        # TODO: what's user_wallet?
         }
 
@@ -104,7 +104,7 @@ class CollectionApiTestCase(TestCase):
 
         data = r.json()
 
-        self.assertEquals(collection.id, data["id"])
+        self.assertEquals(str(collection.id), data["id"])
 
     def test_list_collections_without_collections(self):
         r = self.client.get(f'/nft-api/v1/collection/all')
@@ -124,4 +124,4 @@ class CollectionApiTestCase(TestCase):
         self.assertEquals(len(data), 1)
         data = data[0]
 
-        self.assertEquals(collection.id, data["id"])
+        self.assertEquals(str(collection.id), data["id"])

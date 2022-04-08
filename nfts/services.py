@@ -1,4 +1,9 @@
+from django.contrib.auth import get_user_model
+
 from nfts.models import NFT, Collection
+
+
+User = get_user_model()
 
 
 class NFTService:
@@ -14,4 +19,5 @@ class CollectionService:
 
     @staticmethod
     def create(data: dict):
+        data["creator"] = User.objects.get(user=data["creator"])
         Collection.objects.create(**data)

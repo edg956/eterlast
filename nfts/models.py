@@ -7,7 +7,7 @@ User = get_user_model()
 
 
 class Collection(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=128)
     description = models.TextField(max_length=256, null=True, blank=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
