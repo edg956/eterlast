@@ -18,5 +18,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('nft-api/v1/', include('nfts.urls'))
+    path('nft-api/v1/', include('nfts.urls')),
+    path('nft-api/v1/', include('users.urls')),
 ]

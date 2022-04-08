@@ -51,7 +51,7 @@ class NftApiTestCase(TestCase):
         self.assertEquals(nft.asset_id, data["asset_id"])
 
     def test_list_nfts_without_nfts(self):
-        r = self.client.get(f'/nft-api/v1/NFT/all')
+        r = self.client.get('/nft-api/v1/NFT/all')
         self.assertEquals(r.status_code, 200)
 
         data = r.json()
@@ -60,7 +60,7 @@ class NftApiTestCase(TestCase):
 
     def test_list_nfts(self):
         nft = NFT.objects.create(**{**self.data, "collection": self.collection})
-        r = self.client.get(f'/nft-api/v1/NFT/all')
+        r = self.client.get('/nft-api/v1/NFT/all')
         self.assertEquals(r.status_code, 200)
         data = r.json()
         self.assertEquals(len(data), 1)
@@ -107,7 +107,7 @@ class CollectionApiTestCase(TestCase):
         self.assertEquals(str(collection.id), data["id"])
 
     def test_list_collections_without_collections(self):
-        r = self.client.get(f'/nft-api/v1/collection/all')
+        r = self.client.get('/nft-api/v1/collection/all')
         self.assertEquals(r.status_code, 200)
 
         data = r.json()
@@ -117,7 +117,7 @@ class CollectionApiTestCase(TestCase):
     def test_list_collections(self):
         collection = Collection.objects.create(**self.data)
 
-        r = self.client.get(f'/nft-api/v1/collection/all')
+        r = self.client.get('/nft-api/v1/collection/all')
 
         self.assertEquals(r.status_code, 200)
         data = r.json()
