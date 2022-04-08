@@ -2,14 +2,11 @@
 set -e
 
 echo "Collecting statics"
-python manage.py collectstatic
+python manage.py collectstatic --noinput
 
 echo "Running migrations"
 python manage.py migrate
 
-echo "Loading fixtures"
-python manage.py loaddata
+gunicorn 'eterlast.wsgi' &
 
-gunicorn -w 1 -b 0.0.0.0:8000 'eterlast.wsgi' &
-
-nginx > /dev/null 2>&1 &
+nginx -g 'daemon off;' > /dev/null
