@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+IMAGE_NAME="eudg956/eterlast"
+
+build() {
+    docker build . -t $IMAGE_NAME
+}
+
+push() {
+    docker push $IMAGE_NAME
+}
+
+start() {
+    docker run -it -p 80:80 --rm $IMAGE_NAME
+}
+
+case $1 in
+    build)
+        build
+        ;;
+    push)
+        push
+        ;;
+    start)
+        start
+        ;;
+    *)
+        echo "Available commands: build, push, start"
+        ;;
+esac
