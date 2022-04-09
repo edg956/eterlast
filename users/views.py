@@ -1,3 +1,5 @@
+import json
+
 from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -16,14 +18,14 @@ def get_user(request: HttpRequest, id: str):
 
 @require_http_methods(["GET"])
 def list_users(request: HttpRequest):
-    queryset = User.objects.filter(Q(is_staff=False) & Q(is_superuser=False))
+    queryset = User.objects.all()
     return JsonResponse([model_to_dict(nft, fields=["user"]) for nft in queryset], safe=False)
 
 
 @require_http_methods(["POST"])
 def create(request: HttpRequest) -> HttpResponse:
     try:
-        UserService.create(request.POST.dict())
+        UserService.create(json.loads(request.body))
     except Exception as e: # noqa
         return HttpResponse(status=400)
 

@@ -1,9 +1,9 @@
-from django.contrib.auth import get_user_model
+import json
+
 from django.test import Client, TestCase
 
 from nfts.models import Collection, NFT
-
-User = get_user_model()
+from users.models import User
 
 
 class NftApiTestCase(TestCase):
@@ -29,7 +29,7 @@ class NftApiTestCase(TestCase):
         cls.client = Client()
 
     def test_mint_creates_nft(self):
-        r = self.client.post('/nft-api/v1/mint', self.data)
+        r = self.client.post('/nft-api/v1/mint', json.dumps(self.data), content_type="application_json")
 
         self.assertEquals(r.status_code, 201)
 
@@ -85,7 +85,11 @@ class CollectionApiTestCase(TestCase):
         cls.client = Client()
 
     def test_create_collection_does_what_it_should(self):
-        r = self.client.post('/nft-api/v1/create_collection', self.data)
+        r = self.client.post(
+            '/nft-api/v1/create_collection',
+            json.dumps({**self.data, "creator": self.user.user}),
+            content_type="application_json"
+        )
 
         self.assertEquals(r.status_code, 201)
 

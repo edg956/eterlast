@@ -1,3 +1,5 @@
+import json
+
 from django.forms.models import model_to_dict
 from django.http import JsonResponse, HttpResponse, HttpRequest
 from django.shortcuts import get_object_or_404
@@ -22,7 +24,7 @@ def list_nfts(request: HttpRequest):
 @require_http_methods(["POST"])
 def mint(request: HttpRequest) -> HttpResponse:
     try:
-        NFTService.mint(request.POST.dict())
+        NFTService.mint(json.loads(request.body))
     except Exception as e: # noqa
         return HttpResponse(status=400)
 
@@ -32,7 +34,7 @@ def mint(request: HttpRequest) -> HttpResponse:
 @require_http_methods(["POST"])
 def create_collection(request: HttpRequest) -> HttpResponse:
     try:
-        CollectionService.create(request.POST.dict())
+        CollectionService.create(json.loads(request.body))
     except Exception as e:  # noqa
         return HttpResponse(status=400)
 

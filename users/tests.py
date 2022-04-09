@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase
 
 from users.models import User
@@ -5,7 +7,11 @@ from users.models import User
 
 class UserApiTestCase(TestCase):
     def test_create_happy_path(self):
-        r = self.client.post('/nft-api/v1/create_user', {"user": "user_wallet"})
+        r = self.client.post(
+            '/nft-api/v1/create_user',
+            json.dumps({"user": "user_wallet"}),
+            content_type="application/json"
+        )
 
         self.assertEquals(r.status_code, 201)
 
